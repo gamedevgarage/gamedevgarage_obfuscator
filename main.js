@@ -6,8 +6,10 @@ var JavaScriptObfuscator = require('javascript-obfuscator');
 
 function onBeforeBuildFinish (options, callback) {
 
-    var mainJsPath = path.join(options.dest, '/src/project.js');  // get path of project.js in build folder
-	var script = fs.readFileSync(mainJsPath, 'utf8');     // read 
+    var mainBundle = options.bundles.find(function(bundle) {return bundle.name === 'main';}); // Thanks to balazsnemeth for 2.4.0 compatibility
+    var mainJsPath = path.join(mainBundle.dest, '/index.js'); 
+    var script = fs.readFileSync(mainJsPath, 'utf8');     // read 
+    
 	// Obfuscate
 	var ob_res = JavaScriptObfuscator.obfuscate(script,
 		{
